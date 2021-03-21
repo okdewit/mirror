@@ -1,0 +1,29 @@
+{
+    "name": "okdewit/mirror",
+    "description": "A PHP package which assists with analyzing PHP code",
+    "minimum-stability": "stable",
+    "license": "MIT",
+    "require": {
+        "php": ">=7.4.0",
+        "illuminate/collections": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*",
+        "symfony/var-dumper": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Okdewit\\Mirror\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Okdewit\\Mirror\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": [
+            "./vendor/bin/phpunit tests/"
+        ]
+    }
+}
