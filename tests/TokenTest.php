@@ -5,7 +5,7 @@ namespace Okdewit\Mirror\Tests;
 use Okdewit\Mirror\SourceFile;
 use Okdewit\Mirror\Tests\Fixtures\C;
 use Okdewit\Mirror\Token;
-use Okdewit\Mirror\TokenLocation;
+use Okdewit\Mirror\TokenSelection;
 use PHPUnit\Framework\TestCase;
 
 class TokenTest extends TestCase

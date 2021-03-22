@@ -24,9 +24,9 @@ class TokenCollection extends Collection
         return $raw ? $tokenCollection : $tokenCollection->reject(fn(Token $token) => $token->isIgnorable())->values();
     }
 
-    public function locate(array $pattern): TokenLocationCollection
+    public function select(array $pattern): TokenSelectionCollection
     {
-        $matches = new TokenLocationCollection();
+        $matches = new TokenSelectionCollection();
 
         foreach ($this->items as $sourceposition => $_) {
             $match = $this->findAt($pattern, $sourceposition);
@@ -38,7 +38,7 @@ class TokenCollection extends Collection
         return $matches;
     }
 
-    public function locateFirst(array $pattern): ?TokenLocation
+    public function selectFirst(array $pattern): ?TokenSelection
     {
         foreach ($this->items as $sourceposition => $_) {
             $match = $this->findAt($pattern, $sourceposition);
@@ -68,7 +68,7 @@ class TokenCollection extends Collection
             ->implode('');
     }
 
-    protected function findAt(array $pattern, int $position): ?TokenLocation
+    protected function findAt(array $pattern, int $position): ?TokenSelection
     {
         $ignorableoffset = 0;
 
@@ -87,6 +87,6 @@ class TokenCollection extends Collection
             return null;
         }
 
-        return new TokenLocation($position, $index);
+        return new TokenSelection($position, $index, $this);
     }
 }

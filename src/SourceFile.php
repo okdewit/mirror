@@ -31,13 +31,13 @@ class SourceFile
         return new self((new ReflectionClass($class))->getFileName());
     }
 
-    public function locate(array $pattern): TokenLocationCollection
+    public function select(array $pattern): TokenSelectionCollection
     {
-        return $this->tokens->locate($pattern);
+        return $this->tokens->select($pattern);
     }
 
-    public function locateFirst(array $pattern): ?TokenLocation
+    public function selectFirst(array $pattern): ?TokenSelection
     {
-        return $this->tokens->locateFirst($pattern);
+        return $this->tokens->selectFirst($pattern);
     }
 }
