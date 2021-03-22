@@ -33,7 +33,6 @@ class TokenCollectionTest extends TestCase
         $location = $source->locateFirst([T_PUBLIC, T_STATIC, T_FUNCTION, new Token(T_STRING, 'B'), '(', ')', '{']);
         $this->assertInstanceOf(TokenLocation::class, $location);
 
-
         dd(TokenCollection::fromString('public static function B() {')->toArray());
         $location = $source->locateFirst(TokenCollection::fromString('public static function B() {')->toArray());
         $this->assertInstanceOf(TokenLocation::class, $location);

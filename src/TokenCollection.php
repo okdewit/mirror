@@ -13,9 +13,15 @@ class TokenCollection extends Collection
         parent::__construct($items);
     }
 
-    public static function fromString(string $string)
+    public static function fromString(string $string, bool $raw = false): self
     {
-        return new self(array_map(fn($baseToken) => Token::fromBasetoken($baseToken), token_get_all($string)));
+        $tokenCollection = new self(array_map(fn($baseToken) => Token::fromBasetoken($baseToken), token_get_all($string)));
+
+        if (!$tokenCollection->first()->is(T_OPEN_TAG)) {
+            $tokenCollection = self::fromString('<?php ' . $string, $raw)->skip(1);
+        }
+
+        return $raw ? $tokenCollection : $tokenCollection->reject(fn(Token $token) => $token->isIgnorable())->values();
     }
 
     public function locate(array $pattern): TokenLocationCollection
