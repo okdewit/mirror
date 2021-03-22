@@ -5,8 +5,7 @@
     "license": "MIT",
     "require": {
         "php": ">=7.4.0",
-        "illuminate/collections": ">=6.0.0",
-        "squizlabs/php_codesniffer": "^3.5.8"
+        "illuminate/collections": ">=6.0.0"
     },
     "require-dev": {
         "phpunit/phpunit": "*",
