@@ -24,7 +24,7 @@ class SourceFileTest extends TestCase
         $C = SourceFile::fromClassname(C::class);
 
         /** @var Token $token */
-        $token = $C->tokens->first();
+        $token = $C->first();
         $this->assertTrue($token->is(T_OPEN_TAG));
     }
 }

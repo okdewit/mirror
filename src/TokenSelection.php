@@ -14,11 +14,6 @@ class TokenSelection extends TokenCollection
         parent::__construct($items);
     }
 
-    public function slicer(): array
-    {
-        return [$this->startIndex, $this->endIndex-$this->startIndex+1];
-    }
-
     public static function create($startIndex, $endIndex, TokenCollection $collection)
     {
         $selection = new self($collection->slice($startIndex, $endIndex-$startIndex+1));

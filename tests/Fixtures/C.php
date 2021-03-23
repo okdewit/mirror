@@ -32,3 +32,5 @@ class C extends A\A
     {
     }
 }
+
+class C2 {}

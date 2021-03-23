@@ -28,7 +28,7 @@ class SourceFileCollection extends LazyCollection
 
         return (new self(fn() => yield from $iterator))
             ->keys()
-            ->map(fn($path) => new SourceFile($path));
+            ->map(fn($path) => SourceFile::fromPath($path));
     }
 
     private static function iteratorFromPath(string $path, string $regex): Iterator

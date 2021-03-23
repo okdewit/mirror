@@ -8,17 +8,15 @@ use Illuminate\Support\Collection;
 use ReflectionClass;
 use ReflectionException;
 
-class SourceFile
+class SourceFile extends TokenCollection
 {
     public string $path;
     public array $baseTokens;
     public TokenCollection $tokens;
 
-    public function __construct($path)
+    public function __construct($items = [])
     {
-        $this->path = $path;
-        $this->baseTokens = token_get_all(file_get_contents($path));
-        $this->tokens = new TokenCollection(collect($this->baseTokens)->map(fn($token) => Token::fromBasetoken($token)));
+        parent::__construct($items);
     }
 
     /**
@@ -28,16 +26,21 @@ class SourceFile
      */
     public static function fromClassname($class): self
     {
-        return new self((new ReflectionClass($class))->getFileName());
+        return self::fromPath((new ReflectionClass($class))->getFileName());
     }
 
-    public function select(array $pattern): TokenSelectionCollection
+    /**
+     * @param $path
+     * @return SourceFile
+     */
+    public static function fromPath($path): self
     {
-        return $this->tokens->select($pattern);
-    }
+        $baseTokens = token_get_all(file_get_contents($path));
 
-    public function selectFirst(array $pattern): ?TokenSelection
-    {
-        return $this->tokens->selectFirst($pattern);
+        $sourceFile = new self(collect($baseTokens)->map(fn($token) => Token::fromBasetoken($token)));
+        $sourceFile->path = $path;
+        $sourceFile->baseTokens = token_get_all(file_get_contents($path));
+
+        return $sourceFile;
     }
 }

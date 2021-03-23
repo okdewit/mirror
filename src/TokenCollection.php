@@ -5,6 +5,7 @@ namespace Okdewit\Mirror;
 
 
 use Illuminate\Support\Collection;
+use Okdewit\Mirror\Structures\ClassStructure;
 
 class TokenCollection extends Collection
 {
@@ -29,7 +30,7 @@ class TokenCollection extends Collection
         $matches = new TokenSelectionCollection();
 
         foreach ($this->values() as $sourceposition => $_) {
-            $match = $this->findAt($pattern, $sourceposition);
+            $match = $this->values()->findAt($pattern, $sourceposition);
             if (!$match) continue;
 
             $matches->push($match);
@@ -41,7 +42,7 @@ class TokenCollection extends Collection
     public function selectFirst(array $pattern): ?TokenSelection
     {
         foreach ($this->values() as $sourceposition => $_) {
-            $match = $this->findAt($pattern, $sourceposition);
+            $match = $this->values()->findAt($pattern, $sourceposition);
             if ($match) return $match;
         }
 
@@ -89,5 +90,17 @@ class TokenCollection extends Collection
         }
 
         return TokenSelection::create($position, $index, $this);
+    }
+
+    public function getClass(): ?ClassStructure
+    {
+        $classes = $this->getClasses();
+        return $classes->count() ? $classes->first() : null;
+    }
+
+    public function getClasses(): TokenSelectionCollection
+    {
+        $selections = $this->select([T_CLASS, T_STRING]);
+        return $selections->map(fn(TokenSelection $selection) => $selection->pipeInto(ClassStructure::class));
     }
 }
