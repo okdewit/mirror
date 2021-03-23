@@ -28,7 +28,7 @@ class TokenCollection extends Collection
     {
         $matches = new TokenSelectionCollection();
 
-        foreach ($this->items as $sourceposition => $_) {
+        foreach ($this->values() as $sourceposition => $_) {
             $match = $this->findAt($pattern, $sourceposition);
             if (!$match) continue;
 
@@ -40,7 +40,7 @@ class TokenCollection extends Collection
 
     public function selectFirst(array $pattern): ?TokenSelection
     {
-        foreach ($this->items as $sourceposition => $_) {
+        foreach ($this->values() as $sourceposition => $_) {
             $match = $this->findAt($pattern, $sourceposition);
             if ($match) return $match;
         }
