@@ -3,23 +3,29 @@
 
 namespace Okdewit\Mirror;
 
-class TokenSelection
+class TokenSelection extends TokenCollection
 {
     public int $startIndex;
     public int $endIndex;
-    public TokenCollection $selection;
     public TokenCollection $collection;
 
-    public function __construct($startIndex, $endIndex, $collection)
+    public function __construct($items = [])
     {
-        $this->startIndex = $startIndex;
-        $this->endIndex = $endIndex;
-        $this->collection = $collection;
-        $this->selection = $collection->slice(...$this->slicer());
+        parent::__construct($items);
     }
 
     public function slicer(): array
     {
-        return [$this->startIndex, $this->endIndex + 1];
+        return [$this->startIndex, $this->endIndex-$this->startIndex+1];
+    }
+
+    public static function create($startIndex, $endIndex, TokenCollection $collection)
+    {
+        $selection = new self($collection->slice($startIndex, $endIndex-$startIndex+1));
+        $selection->startIndex = $startIndex;
+        $selection->endIndex = $endIndex;
+        $selection->collection = $collection;
+
+        return $selection;
     }
 }

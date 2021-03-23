@@ -18,10 +18,10 @@ class TokenCollection extends Collection
         $tokenCollection = new self(array_map(fn($baseToken) => Token::fromBasetoken($baseToken), token_get_all($string)));
 
         if (!$tokenCollection->first()->is(T_OPEN_TAG)) {
-            $tokenCollection = self::fromString('<?php ' . $string, $raw)->skip(1);
+            $tokenCollection = self::fromString('<?php ' . $string, $raw)->skip($raw ? 1 : 0);
         }
 
-        return $raw ? $tokenCollection : $tokenCollection->reject(fn(Token $token) => $token->isIgnorable())->values();
+        return $raw ? $tokenCollection->values() : $tokenCollection->reject(fn(Token $token) => $token->isIgnorable())->values();
     }
 
     public function select(array $pattern): TokenSelectionCollection
@@ -81,12 +81,13 @@ class TokenCollection extends Collection
                 /** @var Token $token */
                 $token = $this->items[$index];
                 if ($token->is($patternFragment)) continue 2;
+                if ($token->isIgnorable() && $patternPosition === 0) return null;
                 if ($token->isIgnorable()) $ignorableoffset++;
             } while ($token->isIgnorable());
 
             return null;
         }
 
-        return new TokenSelection($position, $index, $this);
+        return TokenSelection::create($position, $index, $this);
     }
 }
