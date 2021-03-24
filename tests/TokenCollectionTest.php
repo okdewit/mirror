@@ -23,7 +23,7 @@ class TokenCollectionTest extends TestCase
         $this->assertEquals('<?php declare( strict_types = 1 )', $selection->toRawString());
     }
 
-    public function test_if_finds_a_complicated_pattern()
+    public function test_it_finds_a_complicated_pattern()
     {
         $source = SourceFile::fromClassname(C::class);
 

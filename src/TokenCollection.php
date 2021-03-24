@@ -4,8 +4,10 @@
 namespace Okdewit\Mirror;
 
 
+use Doctrine\DBAL\Exception\ConstraintViolationException;
 use Illuminate\Support\Collection;
 use Okdewit\Mirror\Structures\ClassStructure;
+use Okdewit\Mirror\Structures\MethodStructure;
 
 class TokenCollection extends Collection
 {
@@ -90,17 +92,5 @@ class TokenCollection extends Collection
         }
 
         return TokenSelection::create($position, $index, $this);
-    }
-
-    public function getClass(): ?ClassStructure
-    {
-        $classes = $this->getClasses();
-        return $classes->count() ? $classes->first() : null;
-    }
-
-    public function getClasses(): TokenSelectionCollection
-    {
-        $selections = $this->select([T_CLASS, T_STRING]);
-        return $selections->map(fn(TokenSelection $selection) => $selection->pipeInto(ClassStructure::class));
     }
 }
